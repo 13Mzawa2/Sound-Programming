@@ -3,6 +3,9 @@
 
 #include <vector>
 
+//	フォーマットID
+#define WAVE_FORMAT_PCM		1
+
 //	チャンネル数
 #define WAVE_CH_MONAURAL	1
 #define WAVE_CH_STEREO		2

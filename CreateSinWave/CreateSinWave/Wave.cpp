@@ -24,7 +24,7 @@ Wave::Wave(char *filename)
 	loadWave(filename);
 }
 
-Wave::Wave()
+Wave::~Wave()
 {
 
 }
@@ -44,7 +44,7 @@ bool Wave::loadWave(char *filename)
 	if (!ifs)
 	{
 		cerr << "File open error." << endl;
-		cerr << "\t" << string(filename) << endl;
+		cerr << "\t" << filename << endl;
 		return false;
 	}
 	//	チャンク（フォーマットID, データサイズ）のロード
@@ -70,7 +70,7 @@ bool Wave::loadWave(char *filename)
 				//	リニアPCAのみ
 				ifs.read((char*)&format, min(16, chunk.size));
 				//	リニアPCAでなかったらエスケープ
-				if (format.formatID != 1)
+				if (format.formatID != WAVE_FORMAT_PCM)
 				{
 					cerr << "unsupported wave file format." << endl;
 					goto WAVE_FILE_ERROR;
@@ -123,7 +123,7 @@ bool Wave::saveWave(char *filename)
 	if (!ofs)
 	{
 		cerr << "file open error." << endl;
-		cerr << "\t" << string(filename) << endl;
+		cout << "\t" << filename << endl;
 		return false;
 	}
 
@@ -135,17 +135,17 @@ bool Wave::saveWave(char *filename)
 		ofs.exceptions(ios::badbit);
 
 		//	RIFF情報の記述
-		strncpy(chunk.ID, "RIFF", 4);
+		memcpy(chunk.ID, "RIFF", 4 * sizeof(char));
 		chunk.size = sizeof(chunk)+4 + sizeof(WaveFormat)+data.size();
 		ofs.write((char*)&chunk, sizeof(WaveChunk));
 		ofs.write("WAVE", 4);
 		//	fmtチャンクの記述
-		strncpy(chunk.ID, "fmt ", 4);
+		memcpy(chunk.ID, "fmt ", 4 * sizeof(char));
 		chunk.size = sizeof(WaveFormat);
 		ofs.write((char*)&chunk, sizeof(WaveChunk));
 		ofs.write((char*)&format, 16);
 		//	dataチャンクの記述
-		strncpy(chunk.ID, "data", 4);
+		memcpy(chunk.ID, "data", 4 * sizeof(char));
 		chunk.size = data.size();
 		ofs.write((char*)&chunk, sizeof(WaveChunk));
 		ofs.write((char*)&data[0], data.size());
@@ -159,6 +159,7 @@ bool Wave::saveWave(char *filename)
 	return true;
 }
 
+//	波形データの取得（1チャンネルのみ）
 void Wave::getChannel(vector<short> &channel, unsigned short ch)
 {
 	channel.resize(dataSize);		//	ベクトルをデータ格納可能状態にする
@@ -197,17 +198,21 @@ void Wave::getChannel(vector<short> &channel, unsigned short ch)
 	}
 }
 //---------------------------------------------------------------------------
-void Wave::setChannel(std::vector<short> &ch0, WaveFormat _fmt)
+//	波形データのセット
+//	データの書き込みはこの関数で行う
+//	こちらはモノラル用
+void Wave::setChannel(vector<short> &ch0, WaveFormat _fmt)
 {
 	format = _fmt;
 
+	//	解像度不明のときは16bitとして処理
 	if (format.resolution != WAVE_RESOLUTION_8BIT && format.resolution != WAVE_RESOLUTION_16BIT)
 		format.resolution = WAVE_RESOLUTION_16BIT;
 
-	//BytesPerSample
+	//	BytesPerSample
 	unsigned short BPS = format.resolution / 8;
 
-	format.formatID = 1;
+	format.formatID = WAVE_FORMAT_PCM;
 	format.numChannels = WAVE_CH_MONAURAL;
 	format.blockSize = format.numChannels * BPS;
 	format.bytesPerSec = format.samplingRate * format.blockSize;
@@ -226,34 +231,38 @@ void Wave::setChannel(std::vector<short> &ch0, WaveFormat _fmt)
 	}
 }
 //---------------------------------------------------------------------------
-void WAVE::set_channel(std::vector<short> &ch0, std::vector<short> &ch1, WAVE_FORMAT _fmt)
+//	波形データのセット
+//	こちらはステレオ用
+void Wave::setChannel(vector<short> &ch0, vector<short> &ch1, WaveFormat _fmt)
 {
-	fmt = _fmt;
+	format = _fmt;
 
-	if (fmt.bits_per_sample != 8 && fmt.bits_per_sample != 16) fmt.bits_per_sample = 16;
+	if (format.resolution != WAVE_RESOLUTION_8BIT && format.resolution != WAVE_RESOLUTION_16BIT)
+		format.resolution = WAVE_RESOLUTION_16BIT;
 
 	//BytesPerSample
-	unsigned short BPS = fmt.bits_per_sample / 8;
+	unsigned short BPS = format.resolution / 8;
 
-	fmt.format_id = 1;
-	fmt.num_of_channels = 2;
-	fmt.block_size = fmt.num_of_channels*BPS;
-	fmt.bytes_per_sec = fmt.samples_per_sec*fmt.block_size;
+	//	フォーマットのセット
+	format.formatID = WAVE_FORMAT_PCM;
+	format.numChannels = WAVE_CH_STEREO;
+	format.blockSize = format.numChannels * BPS;
+	format.bytesPerSec = format.samplingRate * format.blockSize;
 
-	sampling_size = BPS*fmt.num_of_channels;
-	data_size = min(ch0.size(), ch1.size());
+	samplingSize = BPS * format.numChannels;
+	dataSize = min(ch0.size(), ch1.size());
 
-	data.resize(sampling_size*ch0.size());
+	data.resize(samplingSize * ch0.size());
 
 	if (BPS == 1){
-		for (int t = 0; t<data_size; t++){
+		for (int t = 0; t < dataSize; t++){
 			data[2 * t] = (ch0[t] >> 8) + 0x80;
 			data[2 * t + 1] = (ch1[t] >> 8) + 0x80;
 		}
 	}
 	else if (BPS == 2){
 		short *ptr = (short*)&data[0];
-		for (int t = 0; t<data_size; t++){
+		for (int t = 0; t < dataSize; t++){
 			ptr[2 * t] = ch0[t];
 			ptr[2 * t + 1] = ch1[t];
 		}
