@@ -20,7 +20,7 @@ int main(void)
 	vector<double>	wavedata(fmt1.samplingRate * 1);
 	vector<short> wave16(wavedata.size());
 	double a = 0.2;			//	U•
-	double f0 = 800.0;		//	ü”g”
+	double f0 = 160.0;		//	ü”g”
 	for (int t = 0; t < wavedata.size(); t++)
 	{
 		wavedata[t] = a * sin(2.0 * MATH_PI * f0 * t / fmt1.samplingRate);
