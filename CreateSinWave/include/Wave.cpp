@@ -331,18 +331,22 @@ void Synthesizer::createSinWave(double a, double f, double t)
 //	‹éŒ`”g
 void Synthesizer::createRectWave(double a, double f, double t)
 {
-	waveData.resize(samplingRate * (int)t);
+	createSinWave(a, f, t);
 	for (int i = 0; i < waveData.size(); i++)
 	{
-		waveData[i] = a * (2.0 * (double)((int)(i / f) % 2 - 0.5));
+		if (waveData[i] < 0) waveData[i] = (short)(SHRT_MIN * a);
+		else waveData[i] = (short)(SHRT_MAX * a);
 	}
 }
 void Synthesizer::createTriangleWave(double a, double f, double t)
 {
 	waveData.resize(samplingRate * t);
-	for (int i = 0; i < waveData.size(); i++)
+	for (int i = 0; i <= samplingRate / 10; i++)
 	{
-		
+		for (int j = 0; j < (int)(samplingRate / f); j++)
+		{
+
+		}
 	}
 }
 //---------------------------------------------------------------------------
