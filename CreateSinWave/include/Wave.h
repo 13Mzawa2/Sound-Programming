@@ -86,11 +86,26 @@ public:
 	//	シンセサイザ内ではすべての波形データを[-1, 1]の実数に納める
 	std::vector<double>		waveData;
 	unsigned long			samplingRate;
+	//	フーリエ変換用
+	std::vector<double>		ampF;			//	周波数毎の振幅
+	std::vector<double>		thetaF;			//	周波数毎の位相
 
-	void loadWaveData(Wave &wav, unsigned short ch);		//	Waveクラスから波形データを読込
-	void createSinWave(double a, double f, double t);		//	振幅a∈[0, 1），周波数f[Hz]，時間t[s]の正弦波の生成
-	void createRectWave(double a, double f, double t);		//	矩形波生成
-	void createTriangleWave(double a, double f, double t);	//	三角波生成	
+	void loadWaveData(Wave &wav, unsigned short ch);				//	Waveクラスから波形データを読込
+	void createSinWave(double a, double f, double t, double th);	//	振幅a∈[0, 1），周波数f[Hz]，時間t[s], 位相th[rad]の正弦波
+	void createRectWave(double a, double f, double t);				//	矩形波生成
+	void createTriangleWave(double a, double f, double t);			//	三角波生成	
+	void createSawtoothWave(double a, double f, double t);			//	ノコギリ波
+
+	void clip(double a);											//	クリッピング
+
+	const Synthesizer operator+(const Synthesizer&);				//	加算合成
+	const Synthesizer operator-(const Synthesizer&);				//	減算合成
+	const Synthesizer operator*(const double a);					//	定数倍
+	const Synthesizer operator/(const double a);					//	除算
+
+	void dft(double startTime, int dftSize, bool useWindow);		//	離散フーリエ変換
+	void fft(double startTime, int fftSize, bool useWindow);		//	高速フーリエ変換
+
 };
 
 #endif // !__WAVE_H

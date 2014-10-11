@@ -6,14 +6,16 @@ int main(void)
 {
 	Wave		wav1;
 	WaveFormat	fmt1;
-	Synthesizer synth1;
+	Synthesizer synth1, synth2, synth3;
 
 	fmt1.samplingRate = 44100;
 	fmt1.resolution = WAVE_RESOLUTION_16BIT;
 	fmt1.numChannels = WAVE_CH_MONAURAL;
 
 	synth1.samplingRate = fmt1.samplingRate;
-	synth1.createRectWave(0.2, 250.0, 1.0);
+	synth1.createSawtoothWave(0.2, 250.0, 1.0);
+	synth2.createSawtoothWave(0.2, 500.0, 1.0);
+	synth3 = synth1 + synth2;
 	wav1.setChannel(synth1.waveData, fmt1);
 	wav1.saveWave("test.wav");
 	
