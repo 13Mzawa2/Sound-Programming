@@ -314,24 +314,24 @@ Synthesizer::~Synthesizer()
 }
 Synthesizer::Synthesizer(const Synthesizer& synth)
 {
-
-}
-//	コピーコンストラクタ
-Synthesizer& Synthesizer::operator=(const Synthesizer& synth)
-{
+	if (synth.waveData.empty())
+	{
+		cout << "ERROR copy; cannot find wave data." << endl;
+	}
 	waveData.resize(synth.waveData.size());
-	ampF.resize(synth.ampF.size());
-	thetaF.resize(synth.thetaF.size());
-
 	for (int i = 0; i < synth.waveData.size(); i++)
 		waveData[i] = synth.waveData[i];
 	samplingRate = synth.samplingRate;
-	for (int n = 0; n < synth.ampF.size(); n++)
+	if (!synth.ampF.empty() && !synth.thetaF.empty())
 	{
-		ampF[n] = synth.ampF[n];
-		thetaF[n] = synth.thetaF[n];
+		ampF.resize(synth.ampF.size());
+		thetaF.resize(synth.thetaF.size());
+		for (int n = 0; n < synth.ampF.size(); n++)
+		{
+			ampF[n] = synth.ampF[n];
+			thetaF[n] = synth.thetaF[n];
+		}
 	}
-	return *this;
 }
 
 //	波形データの取得
@@ -403,13 +403,46 @@ void Synthesizer::clip(double a = 1.0)
 	}
 }
 //---------------------------------------------------------------------------
+
+//	代入
+Synthesizer& Synthesizer::operator=(const Synthesizer& synth)
+{
+	if (synth.waveData.empty())
+	{
+		cout << "ERROR operator=; cannot find wave data." << endl;
+		return *this;
+	}
+	if (this == &synth) return *this;
+	waveData.resize(synth.waveData.size());
+	for (int i = 0; i < synth.waveData.size(); i++)
+		waveData[i] = synth.waveData[i];
+	samplingRate = synth.samplingRate;
+	if (!synth.ampF.empty() && !synth.thetaF.empty())
+	{
+		ampF.resize(synth.ampF.size());
+		thetaF.resize(synth.thetaF.size());
+		for (int n = 0; n < synth.ampF.size(); n++)
+		{
+			ampF[n] = synth.ampF[n];
+			thetaF[n] = synth.thetaF[n];
+		}
+	}
+	return *this;
+}
 //	加算合成
 const Synthesizer Synthesizer::operator+(const Synthesizer& synth)
 {
+	if (synth.waveData.empty())
+	{
+		cout << "ERROR operator+; cannot find wave data." << endl; 
+		return *this;
+	}
 	//	サイズが異なる場合は後の方に合わせる
 	if (waveData.size() < synth.waveData.size())
 	{
 		vector<double> temp(synth.waveData.size());
+		for (int i = 0; i < waveData.size(); i++)
+			temp[i] = waveData[i];
 		waveData.resize(synth.waveData.size(), 0.0);
 		for (int i = 0; i < temp.size(); i++)
 			waveData[i] = temp[i];
@@ -421,6 +454,11 @@ const Synthesizer Synthesizer::operator+(const Synthesizer& synth)
 //	減算合成
 const Synthesizer Synthesizer::operator-(const Synthesizer& synth)
 {
+	if (synth.waveData.empty())
+	{
+		cout << "ERROR operator-; cannot find wave data." << endl;
+		return *this;
+	}
 	//	サイズが異なる場合は後の方に合わせる
 	if (waveData.size() < synth.waveData.size())
 	{

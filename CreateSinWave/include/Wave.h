@@ -80,8 +80,7 @@ public:
 	Synthesizer();
 	Synthesizer(unsigned long rate);
 	~Synthesizer(); 
-	Synthesizer(const Synthesizer&);
-	Synthesizer& operator=(const Synthesizer&);
+	Synthesizer(const Synthesizer&);		//	コピーコンストラクタ
 
 	//	シンセサイザ内ではすべての波形データを[-1, 1]の実数に納める
 	std::vector<double>		waveData;
@@ -98,6 +97,7 @@ public:
 
 	void clip(double a);											//	クリッピング
 
+	Synthesizer& operator=(const Synthesizer&);						//	代入
 	const Synthesizer operator+(const Synthesizer&);				//	加算合成
 	const Synthesizer operator-(const Synthesizer&);				//	減算合成
 	const Synthesizer operator*(const double a);					//	定数倍

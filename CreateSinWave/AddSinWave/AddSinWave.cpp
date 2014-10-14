@@ -13,10 +13,12 @@ int main(void)
 	fmt1.numChannels = WAVE_CH_MONAURAL;
 
 	synth1.samplingRate = fmt1.samplingRate;
+	synth2.samplingRate = fmt1.samplingRate;
 	synth1.createSawtoothWave(0.2, 250.0, 1.0);
 	synth2.createSawtoothWave(0.2, 500.0, 1.0);
-	synth3 = synth1 + synth2;
-	wav1.setChannel(synth1.waveData, fmt1);
+	synth3 = (synth1 + synth2);
+	synth3 = synth3 / 2.0;
+	wav1.setChannel(synth3.waveData, fmt1);
 	wav1.saveWave("test.wav");
 	
 	return 0;
