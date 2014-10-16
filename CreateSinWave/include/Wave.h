@@ -90,7 +90,7 @@ public:
 	std::vector<double>		thetaF;			//	ü”g”–ˆ‚ÌˆÊ‘Š
 
 	void loadWaveData(Wave &wav, unsigned short ch);				//	WaveƒNƒ‰ƒX‚©‚ç”gŒ`ƒf[ƒ^‚ğ“Ç
-	void createSinWave(double a, double f, double t, double th);	//	U•a¸[0, 1jCü”g”f[Hz]CŠÔt[s], ˆÊ‘Šth[rad]‚Ì³Œ·”g
+	void createSinWave(double a, double f, double t, double th = 0.0);	//	U•a¸[0, 1jCü”g”f[Hz]CŠÔt[s], ˆÊ‘Šth[rad]‚Ì³Œ·”g
 	void createRectWave(double a, double f, double t);				//	‹éŒ`”g¶¬
 	void createTriangleWave(double a, double f, double t);			//	OŠp”g¶¬	
 	void createSawtoothWave(double a, double f, double t);			//	ƒmƒRƒMƒŠ”g

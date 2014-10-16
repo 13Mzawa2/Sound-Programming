@@ -343,7 +343,7 @@ void Synthesizer::loadWaveData(Wave &wav, unsigned short ch)
 
 //---------------------------------------------------------------------------
 //	ê≥å∑îg
-void Synthesizer::createSinWave(double a, double f, double t, double th = 0.0)
+void Synthesizer::createSinWave(double a, double f, double t, double th)
 {
 	waveData.resize(samplingRate * t);
 	for (int i = 0; i < waveData.size(); i++)
