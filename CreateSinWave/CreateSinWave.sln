@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CreateSinWave", "CreateSinW
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AddSinWave", "AddSinWave\AddSinWave.vcxproj", "{F594E4E7-3916-4A83-AC20-5B27F862D5AB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testDriver", "testDriver\testDriver.vcxproj", "{CB140E1A-E751-4C0D-961E-3231E6A77FDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,10 @@ Global
 		{F594E4E7-3916-4A83-AC20-5B27F862D5AB}.Debug|Win32.Build.0 = Debug|Win32
 		{F594E4E7-3916-4A83-AC20-5B27F862D5AB}.Release|Win32.ActiveCfg = Release|Win32
 		{F594E4E7-3916-4A83-AC20-5B27F862D5AB}.Release|Win32.Build.0 = Release|Win32
+		{CB140E1A-E751-4C0D-961E-3231E6A77FDB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CB140E1A-E751-4C0D-961E-3231E6A77FDB}.Debug|Win32.Build.0 = Debug|Win32
+		{CB140E1A-E751-4C0D-961E-3231E6A77FDB}.Release|Win32.ActiveCfg = Release|Win32
+		{CB140E1A-E751-4C0D-961E-3231E6A77FDB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
