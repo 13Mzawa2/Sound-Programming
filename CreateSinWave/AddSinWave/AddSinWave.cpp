@@ -18,7 +18,7 @@ int main(void)
 	synth2.createTriangleWave(0.4, 120.0, 1.0);
 	synth3 = (synth1 + synth2);
 	synth3 = synth3 / 2.0;
-	synth3.createSinWave(0.6, 250, 1.0);
+	synth3.createRectWave(1.0, 250, 1.0);
 	wav1.setChannel(synth3.waveData, fmt1);
 	wav1.saveWave("test.wav");
 	
