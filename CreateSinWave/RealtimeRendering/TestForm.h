@@ -84,18 +84,5 @@ namespace RealtimeRendering {
 	};
 }
 #include <Windows.h>
-#include <XAudio2.h>
-#include <iostream>
-#include <vector>
-#pragma comment(lib, "xaudio2.lib")
-
-#define _WIN32_DCOM
 
 #define PI		3.1415926535f
-
-extern IXAudio2* xaudio;
-extern IXAudio2MasteringVoice* mastering_voice;
-
-void XAudio2Init(void);
-void XAudio2CleanUp(void);
-void setWaveDatad(std::vector<double> &datad, std::vector<char> &datac, WAVEFORMATEX fmt);
