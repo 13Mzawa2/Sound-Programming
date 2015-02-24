@@ -83,6 +83,13 @@ namespace RealtimeRendering {
 
 		}
 #pragma endregion
+	public:
+		XAudio2 ^device;
+		MasteringVoice ^xMVoice;
+		WaveFormat ^format;
+		AudioBuffer ^xBuf;
+		IO::MemoryStream ^mStream;
+		SourceVoice ^xSrcVoice;
 	private: 
 		System::Void button1_Click(System::Object^  sender, System::EventArgs^  e);
 		System::Void TestForm_Load(System::Object^  sender, System::EventArgs^  e);
