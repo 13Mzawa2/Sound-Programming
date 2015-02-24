@@ -9,6 +9,10 @@ namespace RealtimeRendering {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+
+	using namespace SlimDX::XAudio2;
+	using namespace SlimDX::Multimedia;
+
 	/// <summary>
 	/// TestForm の概要
 	/// </summary>
@@ -21,6 +25,8 @@ namespace RealtimeRendering {
 			//
 			//TODO: ここにコンストラクター コードを追加します
 			//
+
+			//XAudio2の初期化
 		}
 
 	protected:
@@ -86,3 +92,6 @@ namespace RealtimeRendering {
 #include <Windows.h>
 
 #define PI		3.1415926535f
+
+using namespace RealtimeRendering;
+using namespace std;

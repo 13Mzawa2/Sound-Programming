@@ -1,10 +1,5 @@
 #include "TestForm.h"
 
-using namespace RealtimeRendering;
-using namespace std;
-
-using namespace SlimDX::XAudio2;
-using namespace SlimDX::Multimedia;
 
 //	XAudio2‚Ì‰Šú‰»ˆ—
 System::Void TestForm::TestForm_Load(System::Object^  sender, System::EventArgs^  e)
@@ -16,7 +11,7 @@ System::Void TestForm::TestForm_FormClosing(System::Object^  sender, System::Win
 }
 System::Void TestForm::button1_Click(System::Object^  sender, System::EventArgs^  e)
 {
-	//XAudio2Init();
+	//XAudio2‚Ì‰Šú‰»
 	XAudio2 ^device = gcnew XAudio2();
 	MasteringVoice ^xMVoice = gcnew MasteringVoice(device);
 
@@ -31,7 +26,7 @@ System::Void TestForm::button1_Click(System::Object^  sender, System::EventArgs^
 
 	//	Sin”g¶¬(double -> short)
 	float a = 0.5;				//	U•(0, 1]
-	float freq = 440.0;			//	ü”g”[Hz]
+	float freq = 880.0;			//	ü”g”[Hz]
 	float time = 1.0;			//	ŠÔ[sec]
 	array<short>^ waveData = gcnew array<short>((int)(format->AverageBytesPerSecond * time));	//	1•b•ª‚Ìƒoƒbƒtƒ@
 	for (int i = 0; i < waveData->Length / 2; i++)
@@ -57,11 +52,16 @@ System::Void TestForm::button1_Click(System::Object^  sender, System::EventArgs^
 	xSrcVoice->Start();
 	MessageBox::Show("I—¹‚µ‚Ü‚·D");
 
-	//	Source Voice ‚Ì”jŠü
-	//xSrcVoice->Stop();
+	//	”jŠü
+	xSrcVoice->Stop();
 	//xBuf->Dispose();
 	//xSrcVoice->Dispose();
 	//mStream->Dispose();
 	//xMVoice->Dispose();
 	//device->Dispose();
+	delete xBuf;
+	delete xSrcVoice;
+	delete mStream;
+	delete xMVoice;
+	delete device;
 }
