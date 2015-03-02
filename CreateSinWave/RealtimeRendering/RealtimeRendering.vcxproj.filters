@@ -26,6 +26,9 @@
     <ClInclude Include="TestForm.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="WaveBuffer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestForm.resx">
