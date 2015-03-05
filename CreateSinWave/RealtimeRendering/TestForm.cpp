@@ -39,8 +39,8 @@ System::Void TestForm::TestForm_FormClosing(System::Object^  sender, System::Win
 System::Void TestForm::button1_Click(System::Object^  sender, System::EventArgs^  e)
 {
 	//	Sin”g¶¬
-	//createWaveData(waveData);
-	//drawWaveGraphics(waveData);
+	createWaveData();
+	drawWaveGraphics(waveData);
 
 	//	ƒoƒbƒtƒ@‚Ìì¬
 	xBuf = gcnew AudioBuffer();
@@ -64,8 +64,9 @@ System::Void TestForm::button1_Click(System::Object^  sender, System::EventArgs^
 //----------------------------------------
 //	”gŒ`‚ğ¶¬
 //----------------------------------------
-System::Void TestForm::createWaveData(array<short>^ wavedata)
+System::Void TestForm::createWaveData()
 {
+	if (waveData != nullptr) delete waveData;
 	waveData = gcnew array<short>((int)(format->AverageBytesPerSecond * time));	//	t•b•ª‚Ìƒoƒbƒtƒ@
 
 	//	‚Ü‚¸À”‚Åì‚é
@@ -79,14 +80,14 @@ System::Void TestForm::createWaveData(array<short>^ wavedata)
 			waveDatad[i] += power[j] * Math::Sin(i * PI * freq[j] / (double)format->SamplesPerSecond);
 		}
 		overshoot = Math::Max(waveDatad[i], overshoot);
-		undershoot = Math::Max(waveDatad[i], undershoot);
+		undershoot = Math::Min(waveDatad[i], undershoot);
 	}
 	//	”gŒ`‚ªshort‚Ì”ÍˆÍŠO‚É”ò‚Ño‚µ‚½‚ç—}‚¦‚Ş
-	if (overshoot - undershoot > 2.0)
+	if (overshoot > 1.0 || undershoot < -1.0)
 	{
 		for (int i = 0; i < waveData->Length; i++)
 		{
-			waveData[i] = (short)(SHRT_MAX * a * waveDatad[i] / 2.0 * (overshoot - undershoot));
+			waveData[i] = (short)(SHRT_MAX * a * waveDatad[i] / (overshoot - undershoot) * 2);
 		}
 	}
 	else
@@ -109,85 +110,98 @@ System::Void TestForm::vScrollBarMax_Scroll(System::Object^  sender, System::Win
 {
 	a = (100.0 - vScrollBarMax->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar10Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
 	power[0] = (100.0 - vScrollBar10Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar16Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar16Hz->Value) / 100.0;
+	power[1] = (100.0 - vScrollBar16Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar25Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar25Hz->Value) / 100.0;
+	power[2] = (100.0 - vScrollBar25Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar40Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar40Hz->Value) / 100.0;
+	power[3] = (100.0 - vScrollBar40Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar63Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar63Hz->Value) / 100.0;
+	power[4] = (100.0 - vScrollBar63Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar100Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar100Hz->Value) / 100.0;
+	power[5] = (100.0 - vScrollBar100Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar158Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar158Hz->Value) / 100.0;
+	power[6] = (100.0 - vScrollBar158Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar251Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar251Hz->Value) / 100.0;
+	power[7] = (100.0 - vScrollBar251Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::vScrollBar398Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e)
 {
-	power[0] = (100.0 - vScrollBar398Hz->Value) / 100.0;
+	power[8] = (100.0 - vScrollBar398Hz->Value) / 100.0;
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 System::Void TestForm::textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e)
 {
 	time = (float)(Convert::ToDouble(textBox1->Text));
 	//	Sin”g¶¬
-	createWaveData(waveData);
+	createWaveData();
 	drawWaveGraphics(waveData);
 }
 //----------------------------------------
 //	”gŒ`‚ğƒOƒ‰ƒtƒBƒbƒN•\¦
 //----------------------------------------
-System::Void TestForm::drawWaveGraphics(array<short>^ wavedata)
+System::Void TestForm::drawWaveGraphics(array<short>^ data)
 {
-	int xmax = (int)((double)wavedata->Length / time / freq[0] * 3) + 1;
+	waveGraphics->Series["wavedata"]->Points->Clear();
+	waveGraphics->Series["max"]->Enabled = false;
+	waveGraphics->Series["min"]->Enabled = false;
+
+	int xmax = (int)((double)data->Length / time / freq[0]) + 1;
 	for (int i = 0; i < xmax; i++)
-		waveGraphics->Series["wavedata"]->Points->AddXY((double)i/time, (double)wavedata[i]);
+		waveGraphics->Series["wavedata"]->Points->AddXY((double)i / time, (double)data[i]);
+
+	//waveGraphics->ChartAreas["ChartArea1"]->AxisY->Maximum = Double::NaN;
+	//waveGraphics->ChartAreas["ChartArea1"]->AxisY->Minimum = Double::NaN;
+
+	if (waveGraphics->ChartAreas["ChartArea1"]->AxisY->Maximum >= SHRT_MAX)
+		waveGraphics->Series["max"]->Enabled = true;
+
+	if (waveGraphics->ChartAreas["ChartArea1"]->AxisY->Minimum <= SHRT_MIN)
+		waveGraphics->Series["min"]->Enabled = true;
 }
