@@ -78,6 +78,16 @@ namespace RealtimeRendering {
 			System::Windows::Forms::DataVisualization::Charting::ChartArea^  chartArea1 = (gcnew System::Windows::Forms::DataVisualization::Charting::ChartArea());
 			System::Windows::Forms::DataVisualization::Charting::Legend^  legend1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Legend());
 			System::Windows::Forms::DataVisualization::Charting::Series^  series1 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::Series^  series2 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint1 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(1,
+				32768));
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint2 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(8000,
+				32768));
+			System::Windows::Forms::DataVisualization::Charting::Series^  series3 = (gcnew System::Windows::Forms::DataVisualization::Charting::Series());
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint3 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(1,
+				-32768));
+			System::Windows::Forms::DataVisualization::Charting::DataPoint^  dataPoint4 = (gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(8000,
+				-32768));
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->waveGraphics = (gcnew System::Windows::Forms::DataVisualization::Charting::Chart());
 			this->vScrollBarMax = (gcnew System::Windows::Forms::VScrollBar());
@@ -123,8 +133,24 @@ namespace RealtimeRendering {
 			series1->Legend = L"Legend1";
 			series1->Name = L"wavedata";
 			series1->YValueType = System::Windows::Forms::DataVisualization::Charting::ChartValueType::Double;
+			series2->ChartArea = L"ChartArea1";
+			series2->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series2->Enabled = false;
+			series2->Legend = L"Legend1";
+			series2->Name = L"max";
+			series2->Points->Add(dataPoint1);
+			series2->Points->Add(dataPoint2);
+			series3->ChartArea = L"ChartArea1";
+			series3->ChartType = System::Windows::Forms::DataVisualization::Charting::SeriesChartType::Line;
+			series3->Enabled = false;
+			series3->Legend = L"Legend1";
+			series3->Name = L"min";
+			series3->Points->Add(dataPoint3);
+			series3->Points->Add(dataPoint4);
 			this->waveGraphics->Series->Add(series1);
-			this->waveGraphics->Size = System::Drawing::Size(464, 164);
+			this->waveGraphics->Series->Add(series2);
+			this->waveGraphics->Series->Add(series3);
+			this->waveGraphics->Size = System::Drawing::Size(676, 164);
 			this->waveGraphics->TabIndex = 1;
 			this->waveGraphics->Text = L"WaveGraphics";
 			// 
@@ -296,7 +322,7 @@ namespace RealtimeRendering {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(488, 320);
+			this->ClientSize = System::Drawing::Size(700, 320);
 			this->Controls->Add(this->label6);
 			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->label5);
@@ -330,7 +356,7 @@ namespace RealtimeRendering {
 		float a = 1.0;				//	U•(0, 1]
 		array<float> ^power;	//	ü”g”–ˆ‚Ìƒpƒ[[dB]
 		float time = 1.0;				//	ŠÔ[sec]
-		float th;				//	‘O‰ñI—¹‚ÌˆÊ‘Š[rad]
+		float th = 0;				//	‘O‰ñI—¹‚ÌˆÊ‘Š[rad]
 		XAudio2 ^device;
 		MasteringVoice ^xMVoice;
 		WaveFormat ^format;
@@ -344,7 +370,7 @@ namespace RealtimeRendering {
 		System::Void TestForm_Load(System::Object^  sender, System::EventArgs^  e);
 		System::Void TestForm_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e);
 		System::Void drawWaveGraphics(array<short>^ wavedata);
-		System::Void createWaveData(array<short>^ wavedata);
+		System::Void createWaveData();
 		System::Void vScrollBarMax_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e);
 		System::Void vScrollBar10Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e);
 		System::Void vScrollBar16Hz_Scroll(System::Object^  sender, System::Windows::Forms::ScrollEventArgs^  e);
@@ -366,4 +392,4 @@ using namespace RealtimeRendering;
 using namespace std;
 
 
-const float freq[9] = {10.0, 15.8, 25.1, 39.8, 63.1, 100, 158, 251, 880};				//	ü”g”[Hz]
+const float freq[9] = {10.0, 15.8, 25.1, 39.8, 63.1, 100, 158, 251, 398};				//	ü”g”[Hz]
